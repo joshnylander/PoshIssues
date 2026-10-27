@@ -204,8 +204,6 @@ function Write-IssueFix {
 	Param(
                 [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$false)]
                 [PSObject] $Fix,
-                [Parameter(Mandatory=$true,Position=1,ValueFromPipeline=$false,ValueFromPipelineByPropertyName=$true, ParameterSetName="UseFixProperties")]
-                [Switch] $UseFixProperties,
 		[Parameter(Mandatory=$true,Position=1,ValueFromPipeline=$false,ValueFromPipelineByPropertyName=$true, ParameterSetName="DatabasePath")]
                 [String] $DatabasePath,
                 [Parameter(Mandatory=$true,Position=1,ValueFromPipeline=$false,ValueFromPipelineByPropertyName=$true, ParameterSetName="Path")]
@@ -219,14 +217,6 @@ function Write-IssueFix {
                 #Make sure we got a fix passed
                 if ($Fix.PSObject.TypeNames[0] -eq 'PoshIssues.Fix') {
                         $_path = ""
-                        If ($UseFixProperties) {
-                                if ($Fix.PSObject.Properties.Name -contains "databasePath") {
-                                        $DatabasePath = $Fix.databasePath
-                                }
-                                if ($Fix.PSObject.Properties.Name -contains "path") {
-                                        $Path = $Fix.path
-                                }
-                        }
                         If ($DatabasePath) {
                                 #Save to database path, overwriting only if Force
                                 Add-Member -InputObject $Fix -MemberType NoteProperty -Name "databasePath" -Value $DatabasePath -Force
